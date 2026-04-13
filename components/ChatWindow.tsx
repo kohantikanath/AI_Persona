@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 type Source = {
   id: string;
@@ -17,11 +17,42 @@ type ApiResponse = {
   sources: Source[];
 };
 
+type Slot = {
+  start: string;
+};
+
 export function ChatWindow() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState<ApiResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [slots, setSlots] = useState<Slot[]>([]);
+  const [slotsError, setSlotsError] = useState<string | null>(null);
+  const [bookingName, setBookingName] = useState("");
+  const [bookingEmail, setBookingEmail] = useState("");
+  const [selectedSlot, setSelectedSlot] = useState("");
+  const [bookingStatus, setBookingStatus] = useState<string | null>(null);
+  const [bookingLoading, setBookingLoading] = useState(false);
+
+  useEffect(() => {
+    async function loadSlots() {
+      try {
+        const result = await fetch("/api/availability");
+        const payload = (await result.json()) as { slots?: Slot[]; error?: string };
+
+        if (!result.ok) {
+          throw new Error(payload.error ?? "Availability request failed.");
+        }
+
+        setSlots(payload.slots ?? []);
+        setSelectedSlot(payload.slots?.[0]?.start ?? "");
+      } catch (loadError) {
+        setSlotsError(loadError instanceof Error ? loadError.message : "Unknown availability error");
+      }
+    }
+
+    loadSlots();
+  }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -53,6 +84,48 @@ export function ChatWindow() {
       setError(submitError instanceof Error ? submitError.message : "Unknown error");
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function handleBookingSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!bookingName || !bookingEmail || !selectedSlot) {
+      setBookingStatus("Name, email, and slot are required.");
+      return;
+    }
+
+    setBookingLoading(true);
+    setBookingStatus(null);
+
+    try {
+      const result = await fetch("/api/book", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: bookingName,
+          email: bookingEmail,
+          start: selectedSlot
+        })
+      });
+
+      const payload = (await result.json()) as {
+        success?: boolean;
+        error?: string;
+        booking?: { start?: string };
+      };
+
+      if (!result.ok) {
+        throw new Error(payload.error ?? "Booking request failed.");
+      }
+
+      setBookingStatus(`Booking confirmed for ${payload.booking?.start ?? selectedSlot}.`);
+    } catch (bookingError) {
+      setBookingStatus(bookingError instanceof Error ? bookingError.message : "Unknown booking error");
+    } finally {
+      setBookingLoading(false);
     }
   }
 
@@ -114,6 +187,44 @@ export function ChatWindow() {
           </div>
         </div>
       ) : null}
+
+      <section className="sources-card">
+        <h3>Book an interview</h3>
+        <p className="source-text">
+          This is the real booking path that will later be reused by the voice agent.
+        </p>
+        {slotsError ? <p className="status error">{slotsError}</p> : null}
+        <form className="booking-form" onSubmit={handleBookingSubmit}>
+          <input
+            className="chat-input"
+            value={bookingName}
+            onChange={(event) => setBookingName(event.target.value)}
+            placeholder="Your name"
+          />
+          <input
+            className="chat-input"
+            value={bookingEmail}
+            onChange={(event) => setBookingEmail(event.target.value)}
+            placeholder="you@example.com"
+            type="email"
+          />
+          <select
+            className="chat-input"
+            value={selectedSlot}
+            onChange={(event) => setSelectedSlot(event.target.value)}
+          >
+            {slots.map((slot) => (
+              <option key={slot.start} value={slot.start}>
+                {new Date(slot.start).toLocaleString()}
+              </option>
+            ))}
+          </select>
+          <button className="chat-button" disabled={bookingLoading || !slots.length} type="submit">
+            {bookingLoading ? "Booking..." : "Book slot"}
+          </button>
+        </form>
+        {bookingStatus ? <p className="status">{bookingStatus}</p> : null}
+      </section>
     </section>
   );
 }

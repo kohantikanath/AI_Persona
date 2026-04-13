@@ -1,9 +1,10 @@
+import { ChatWindow } from "@/components/ChatWindow";
+
 const setupSteps = [
-  "Create a Supabase project and copy its URL and keys into .env.local.",
-  "Create a Cal.com account and add API credentials.",
-  "Add your GitHub username and, optionally, a personal access token.",
-  "Add your resume file under data/resume/ before building ingestion.",
-  "Run npm install, then npm run dev once dependencies are available."
+  "Rotate your exposed Supabase keys once more because they appeared in terminal output.",
+  "Connect Cal.com credentials after chat is stable.",
+  "Add OpenAI later if you want model-generated grounded responses beyond lexical summarization.",
+  "Use this page to test grounded questions against the ingested resume and GitHub data."
 ];
 
 export default function HomePage() {
@@ -26,6 +27,8 @@ export default function HomePage() {
           ))}
         </ol>
       </section>
+
+      <ChatWindow />
     </main>
   );
 }

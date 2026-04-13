@@ -1,5 +1,3 @@
-
-
 create extension if not exists vector;
 
 create table if not exists knowledge_chunks (

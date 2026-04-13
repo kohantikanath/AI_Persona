@@ -83,6 +83,104 @@ h1 {
   line-height: 1.8;
 }
 
+.chat-shell {
+  margin-top: 28px;
+  display: grid;
+  gap: 20px;
+}
+
+.small {
+  font-size: 1rem;
+}
+
+.chat-form,
+.answer-card,
+.sources-card {
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: rgba(255, 252, 248, 0.9);
+}
+
+.chat-label,
+.source-title,
+.status {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.chat-input {
+  width: 100%;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #fffdfa;
+  color: var(--ink);
+  font: inherit;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+.chat-button {
+  margin-top: 14px;
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}
+
+.chat-button:disabled {
+  cursor: wait;
+  opacity: 0.8;
+}
+
+.chat-result {
+  display: grid;
+  gap: 20px;
+}
+
+.answer-copy {
+  margin: 0;
+  white-space: pre-wrap;
+  font: inherit;
+  line-height: 1.8;
+}
+
+.source-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 16px;
+}
+
+.source-item {
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.source-item:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.source-text {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.error {
+  color: #9f2d16;
+}
+
 @media (max-width: 640px) {
   .page {
     padding-top: 40px;

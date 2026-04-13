@@ -20,6 +20,15 @@ Optional for later:
 - `GITHUB_TOKEN`
 - `OPENAI_API_KEY`
 
+Required for grounded chat:
+
+- `GROQ_API_KEY`
+
+Optional:
+
+- `GROQ_BASE_URL`
+- `GROQ_MODEL`
+
 ## 2. Install dependencies
 
 ```bash

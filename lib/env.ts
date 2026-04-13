@@ -10,7 +10,10 @@ const envSchema = z.object({
   CALCOM_API_KEY: z.string().optional(),
   CALCOM_EVENT_TYPE_ID: z.string().optional(),
   CALCOM_USERNAME: z.string().optional(),
-  OPENAI_API_KEY: z.string().optional()
+  OPENAI_API_KEY: z.string().optional(),
+  GROQ_API_KEY: z.string().optional(),
+  GROQ_BASE_URL: z.string().url().default("https://api.groq.com/openai/v1"),
+  GROQ_MODEL: z.string().default("llama-3.3-70b-versatile")
 });
 
 export const env = envSchema.parse({
@@ -23,5 +26,8 @@ export const env = envSchema.parse({
   CALCOM_API_KEY: process.env.CALCOM_API_KEY,
   CALCOM_EVENT_TYPE_ID: process.env.CALCOM_EVENT_TYPE_ID,
   CALCOM_USERNAME: process.env.CALCOM_USERNAME,
-  OPENAI_API_KEY: process.env.OPENAI_API_KEY
+  OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+  GROQ_API_KEY: process.env.GROQ_API_KEY,
+  GROQ_BASE_URL: process.env.GROQ_BASE_URL,
+  GROQ_MODEL: process.env.GROQ_MODEL
 });

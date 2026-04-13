@@ -26,13 +26,16 @@ Repository scaffolding is in place. The next implementation steps are:
 - `Supabase`
 - `Cal.com`
 - `GitHub API`
+- `Groq API`
 
 ## Local Setup
 
 1. Copy `.env.example` to `.env.local`.
 2. Fill in Supabase, GitHub, and Cal.com credentials.
-3. Run `npm install`.
-4. Run `npm run dev`.
+3. Add `GROQ_API_KEY` for grounded generation.
+4. Optionally set `GROQ_MODEL` if your account uses a different Groq-supported model.
+5. Run `npm install`.
+6. Run `npm run dev`.
 
 ## Free-First Constraint
 

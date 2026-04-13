@@ -7,11 +7,16 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "ingest:resume": "tsx scripts/ingest-resume.ts",
+    "ingest:github": "tsx scripts/ingest-github.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.8",
+    "dotenv": "^16.4.7",
+    "mammoth": "^1.9.1",
     "next": "^15.3.1",
+    "pdf-parse": "^1.1.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "zod": "^3.24.4"
@@ -22,6 +27,7 @@
     "@types/react-dom": "^19.1.2",
     "eslint": "^9.25.0",
     "eslint-config-next": "^15.3.1",
+    "tsx": "^4.19.3",
     "typescript": "^5.8.3"
   }
 }
